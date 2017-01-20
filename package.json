@@ -1,0 +1,27 @@
+{
+  "name": "api_chat",
+  "version": "0.0.1",
+  "description": "Live chat",
+  "main": "index.js",
+  "author": "Belinda <b.bowlyjung@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.21",
+    "mongoose": "^4.7.7",
+    "mongoose-auto-increment": "^5.0.1",
+    "node-uuid": "^1.4.7"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "gulp-babel": "^6.1.2",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "build": "node",
+    "dev": "nodemon --exec babel-node src/server.js"
+  }
+}
