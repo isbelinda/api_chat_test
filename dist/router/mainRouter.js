@@ -29,6 +29,10 @@ router.use(function (req, res, next) {
       case "2.0":
          (0, _routerV4.default)(req, res, next);
          break;
+
+      default:
+         (0, _routerV2.default)(req, res, next);
+         break;
    }
 });
 

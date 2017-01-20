@@ -13,6 +13,10 @@ router.use((req, res, next) => {
       case "2.0":
          routerVersion2(req, res, next);
          break;
+      
+      default:
+         routerVersion1(req, res, next);
+           break;
    }
 });
 

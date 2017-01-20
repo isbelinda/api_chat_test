@@ -21,7 +21,7 @@
     "nodemon": "^1.11.0"
   },
   "scripts": {
-    "build": "node",
+    "build": "node dist/server.js",
     "dev": "nodemon --exec babel-node src/server.js"
   }
 }
