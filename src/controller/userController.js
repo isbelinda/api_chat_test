@@ -1,10 +1,21 @@
+import uuid from 'node-uuid';
 import * as MODEL from '../app/models';
 import * as CONFIG from '../app/config';
 import * as MAINCONTROLLER from '../controller/mainController';
 
 export const login = (req, res) => {
-    MODEL.User.findOne({username: username, password: password}, (err, user) => {
+    MODEL.User.findOne({username: req.body.username}, (err, user) => {
+        if(user.password != req.body.password) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.WRONG_PASSWORD));
+        let token = uuid.v1();
         
+        MODEL.User.findOneAndUpdate({userId: user.userId},{
+            $set: {token: token, updatedDate: new Date()}
+        },
+            {upsert: false, new: true},
+            (err, model) => {
+                if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+                return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
+        })
     })
 };
 
@@ -35,4 +46,23 @@ export const create = (req, res) => {
             return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
         });
     });
+};
+
+export const edit = (req, res) => {
+
+};
+
+export const updateTokenFCM = (req, res) => {
+    MODEL.User.findOne({token: req.headers.Authorization_cms}, (err, user) => {
+        if(!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_NOT_FOUND));
+        
+        MODEL.User.findOneAndUpdate({userId: user.userId},{
+                $set: {token_fcm: token, updatedDate: new Date()}
+            },
+            {upsert: false, new: true},
+            (err, model) => {
+                if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+                return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
+            })
+    })
 };

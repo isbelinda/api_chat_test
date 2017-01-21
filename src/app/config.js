@@ -16,7 +16,11 @@ export const CONSTANT = {
     DATA_NOT_FOUND: 'Data not found.',
     USER_NOT_FOUND: 'User not found.',
     USER_ALREADY: `This account has already exists.`,
-    SAVE_SUCCESS: 'Save success.'
+    SAVE_SUCCESS: 'Save success.',
+    WRONG_PASSWORD: 'Wrong Password.',
+    TOKEN_ERROR: `Failed to authenticate token.`,
+    TOKEN_NOT_PROVIDED: `No token provided`,
+    DEVICE_NOT_FOUND: 'Device not found.',
 };
 
 export const FORMAT_TYPE = {

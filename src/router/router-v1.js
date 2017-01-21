@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
+import * as mainController from '../controller/mainController';
 import * as userController from '../controller/userController';
 
 router.get('/', (req, res) => {
@@ -9,6 +10,10 @@ router.get('/', (req, res) => {
 
 router.post('/User/Login', (req, res) => {
     userController.login(req, res);
+});
+
+router.use((req, res, next) => {
+    mainController.getToken(req, res, next);
 });
 
 router.get('/User/GetLists', (req, res) => {
