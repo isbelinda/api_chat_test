@@ -16,7 +16,10 @@ const UserSchema = new Schema({
     'roleId' : Number,
     'token' : String,
     'token_fcm' : String,
-    'hotelId' : Number
+    'hotelId' : Number,
+    'hotelName' : String,
+    'createdDate' : Date,
+    'updatedDate' : Date
 });
 UserSchema.plugin(autoIncrement.plugin, {
     model: 'User',
@@ -34,7 +37,9 @@ const DeviceSchema = new Schema({
     'siteId' : Number,
     'token' : String,
     'token_fcm' : String,
-    'hotelId' : Number
+    'hotelId' : Number,
+    'createdDate' : Date,
+    'updatedDate' : Date
 });
 DeviceSchema.plugin(autoIncrement.plugin, {
     model: 'Device',
@@ -47,7 +52,9 @@ export const Device = mongoose.model('Device', DeviceSchema);
 
 //// PROJECTS
 const ProjectSchema = new Schema({
-    'projectName' : String
+    'projectName' : String,
+    'createdDate' : Date,
+    'updatedDate' : Date
 });
 ProjectSchema.plugin(autoIncrement.plugin, {
     model: 'Project',
@@ -60,7 +67,9 @@ export const Project = mongoose.model('Project', ProjectSchema);
 
 //// HOTEL FOR HANDIGO
 const HotelSchema = new Schema({
-    'hotelName' : String
+    'hotelName' : String,
+    'createdDate' : Date,
+    'updatedDate' : Date
 });
 HotelSchema.plugin(autoIncrement.plugin, {
     model: 'Hotel',

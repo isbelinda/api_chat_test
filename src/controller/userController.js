@@ -1,111 +1,38 @@
-var UserModel = require('../models/UserModel.js');
+import * as MODEL from '../app/models';
+import * as CONFIG from '../app/config';
+import * as MAINCONTROLLER from '../controller/mainController';
 
-/**
- * UserController.js
- *
- * @description :: Server-side logic for managing Users.
- */
-module.exports = {
+export const login = (req, res) => {
+    MODEL.User.findOne({username: username, password: password}, (err, user) => {
+        
+    })
+};
 
-    /**
-     * UserController.list()
-     */
-    list: function (req, res) {
-        UserModel.find(function (err, Users) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting User.',
-                    error: err
-                });
-            }
-            return res.json(Users);
-        });
-    },
+export const lists = (req, res) => {
+    MODEL.User.find((err, users) => {
+        if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+        return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.ARRAY, users));
+    })
+};
 
-    /**
-     * UserController.show()
-     */
-    show: function (req, res) {
-        var id = req.params.id;
-        UserModel.findOne({_id: id}, function (err, User) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting User.',
-                    error: err
-                });
-            }
-            if (!User) {
-                return res.status(404).json({
-                    message: 'No such User'
-                });
-            }
-            return res.json(User);
-        });
-    },
+export const create = (req, res) => {
+    let userRequest = req.body;
+    userRequest.createdDate = new Date();
+    userRequest.updatedDate = new Date();
 
-    /**
-     * UserController.create()
-     */
-    create: function (req, res) {
-        var User = new UserModel({			username : req.body.username,			password : req.body.password,			siteId : req.body.siteId,			roleId : req.body.roleId,			token : req.body.token,			token_fcm : req.body.token_fcm,			hotelId : req.body.hotelId
-        });
-
-        User.save(function (err, User) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating User',
-                    error: err
-                });
-            }
-            return res.status(201).json(User);
-        });
-    },
-
-    /**
-     * UserController.update()
-     */
-    update: function (req, res) {
-        var id = req.params.id;
-        UserModel.findOne({_id: id}, function (err, User) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting User',
-                    error: err
-                });
-            }
-            if (!User) {
-                return res.status(404).json({
-                    message: 'No such User'
-                });
-            }
-
-            User.username = req.body.username ? req.body.username : User.username;			User.password = req.body.password ? req.body.password : User.password;			User.siteId = req.body.siteId ? req.body.siteId : User.siteId;			User.roleId = req.body.roleId ? req.body.roleId : User.roleId;			User.token = req.body.token ? req.body.token : User.token;			User.token_fcm = req.body.token_fcm ? req.body.token_fcm : User.token_fcm;			User.hotelId = req.body.hotelId ? req.body.hotelId : User.hotelId;			
-            User.save(function (err, User) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating User.',
-                        error: err
-                    });
-                }
-
-                return res.json(User);
-            });
-        });
-    },
-
-    /**
-     * UserController.remove()
-     */
-    remove: function (req, res) {
-        var id = req.params.id;
-        UserModel.findByIdAndRemove(id, function (err, User) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the User.',
-                    error: err
-                });
-            }
-            return res.status(204).json();
-        });
+    if(userRequest.roleId == CONFIG.ROLETYPE.ADMIN && userRequest.siteId == CONFIG.SITE.HANDIGO){
+        if(!userRequest.hotelId) return res.json({ isSuccess: false });
     }
+
+    MODEL.User.findOne({username: userRequest.username}, (err, user) => {
+        if(user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_ALREADY));
+
+        let userModel = new MODEL.User(userRequest);
+
+        userModel.save((err, model) => {
+            if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+
+            return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
+        });
+    });
 };
