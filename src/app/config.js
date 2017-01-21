@@ -21,6 +21,8 @@ export const CONSTANT = {
     TOKEN_ERROR: `Failed to authenticate token.`,
     TOKEN_NOT_PROVIDED: `No token provided`,
     DEVICE_NOT_FOUND: 'Device not found.',
+    SEND_MSG_SUCCESS: 'Send message is success.',
+    SEND_MSG_FAIL: 'Send message is fail.'
 };
 
 export const FORMAT_TYPE = {

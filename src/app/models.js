@@ -37,7 +37,7 @@ const DeviceSchema = new Schema({
     'siteId' : Number,
     'token' : String,
     'token_fcm' : String,
-    'hotelId' : Number,
+    'infoSite' : {},
     'createdDate' : Date,
     'updatedDate' : Date
 });
@@ -48,21 +48,6 @@ DeviceSchema.plugin(autoIncrement.plugin, {
     incrementBy: 1
 });
 export const Device = mongoose.model('Device', DeviceSchema);
-
-
-//// PROJECTS
-const ProjectSchema = new Schema({
-    'projectName' : String,
-    'createdDate' : Date,
-    'updatedDate' : Date
-});
-ProjectSchema.plugin(autoIncrement.plugin, {
-    model: 'Project',
-    field: 'projectId',
-    startAt: 1,
-    incrementBy: 1
-});
-export const Project = mongoose.model('Project', ProjectSchema);
 
 
 //// HOTEL FOR HANDIGO

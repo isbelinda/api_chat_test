@@ -13,8 +13,7 @@ export const login = (req, res) => {
         },
             {upsert: false, new: true},
             (err, model) => {
-                if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
-                return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
+                MAINCONTROLLER.isDefaultTemplate(res, err, model);
         })
     })
 };
@@ -41,9 +40,7 @@ export const create = (req, res) => {
         let userModel = new MODEL.User(userRequest);
 
         userModel.save((err, model) => {
-            if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
-
-            return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
+            MAINCONTROLLER.isDefaultTemplate(res, err, model);
         });
     });
 };
@@ -52,17 +49,11 @@ export const edit = (req, res) => {
 
 };
 
+export const remove = (req, res) => {
+    
+};
+
 export const updateTokenFCM = (req, res) => {
-    MODEL.User.findOne({token: req.headers.Authorization_cms}, (err, user) => {
-        if(!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_NOT_FOUND));
-        
-        MODEL.User.findOneAndUpdate({userId: user.userId},{
-                $set: {token_fcm: token, updatedDate: new Date()}
-            },
-            {upsert: false, new: true},
-            (err, model) => {
-                if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
-                return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.OBJECT, model));
-            })
-    })
+    if(!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
+    MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.User);
 };

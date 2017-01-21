@@ -1,9 +1,10 @@
 import * as CONFIG from '../app/config';
 import * as MODEL from '../app/models';
+import FCM from 'fcm-push';
+const fcm = new FCM(CONFIG.FCM_KEY);
 
 export const getToken = (req, res, next) => {
-    // console.log(req.headers.authorization_cms);
-    let token = req.headers.authorization_cms || req.headers.authorization_app
+    let token = req.headers.authorization_cms || req.headers.authorization_app;
     if(req.headers.authorization_cms){
         MODEL.User.findOne({token: token}, (err, user) => {
             checkAuth(req, res, next, err, user);
@@ -58,4 +59,35 @@ export const isJsonSuccessTemplate = (type, model) => {
     }
     
     return template;
+};
+
+export const isDefaultTemplate = (res, err, model) => {
+    if(err) return res.json(isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+    return res.json(isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.ARRAY, model));
+};
+
+export const isUpdateTokenFCM = (req, res, schema) => {
+    schema.findByIdAndUpdate(req.infoToken._id,{
+            $set: {token_fcm: req.body.token_fcm, updatedDate: new Date()}
+        },
+        {upsert: false, new: true},
+        (err, model) => {
+            isDefaultTemplate(res, err, model);
+        })
+};
+
+export const isSendMessage = (res, message) => {
+    //callback style
+    fcm.send(message, function(err, response){
+        if (err) {
+            console.log("Something has gone wrong!");
+            return res.json(isJsonErrorTemplate(CONFIG.CONSTANT.SEND_MSG_FAIL));
+        } else {
+            console.log("Successfully sent with response: ", response);
+            return res.json({
+                isSuccess: true,
+                message: CONFIG.CONSTANT.SEND_MSG_SUCCESS
+            })
+        }
+    });
 };

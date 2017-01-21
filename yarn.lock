@@ -552,6 +552,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
+bluebird@^3.4.1:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
+
 bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
@@ -904,6 +908,13 @@ fancy-log@^1.1.0:
   dependencies:
     chalk "^1.1.1"
     time-stamp "^1.0.0"
+
+fcm-push:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/fcm-push/-/fcm-push-1.1.2.tgz#26ca5d5533ab57c66bb5b006d88cf14bcd1c5c75"
+  dependencies:
+    bluebird "^3.4.1"
+    retry "^0.9.0"
 
 filename-regex@^2.0.0:
   version "2.0.0"
@@ -2095,6 +2106,10 @@ require_optional@~1.0.0:
 resolve-from@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
+
+retry@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/retry/-/retry-0.9.0.tgz#6f697e50a0e4ddc8c8f7fb547a9b60dead43678d"
 
 rimraf@~2.5.1, rimraf@~2.5.4, rimraf@2:
   version "2.5.4"

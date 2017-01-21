@@ -1,111 +1,65 @@
-var deviceModel = require('../models/deviceModel.js');
+import uuid from 'node-uuid';
+import * as MODEL from '../app/models';
+import * as CONFIG from '../app/config';
+import * as MAINCONTROLLER from '../controller/mainController';
 
-/**
- * deviceController.js
- *
- * @description :: Server-side logic for managing devices.
- */
-module.exports = {
+export const login = (req, res) => {
+    MODEL.Device.findOne({username: req.body.username, password: req.body.password}, (err, device) => {
+        if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
 
-    /**
-     * deviceController.list()
-     */
-    list: function (req, res) {
-        deviceModel.find(function (err, devices) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting device.',
-                    error: err
-                });
-            }
-            return res.json(devices);
-        });
-    },
-
-    /**
-     * deviceController.show()
-     */
-    show: function (req, res) {
-        var id = req.params.id;
-        deviceModel.findOne({_id: id}, function (err, device) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting device.',
-                    error: err
-                });
-            }
-            if (!device) {
-                return res.status(404).json({
-                    message: 'No such device'
-                });
-            }
-            return res.json(device);
-        });
-    },
-
-    /**
-     * deviceController.create()
-     */
-    create: function (req, res) {
-        var device = new deviceModel({			username : req.body.username,			password : req.body.password,			siteId : req.body.siteId,			token : req.body.token,			token_fcm : req.body.token_fcm,			hotelId : req.body.hotelId
-        });
-
-        device.save(function (err, device) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when creating device',
-                    error: err
-                });
-            }
-            return res.status(201).json(device);
-        });
-    },
-
-    /**
-     * deviceController.update()
-     */
-    update: function (req, res) {
-        var id = req.params.id;
-        deviceModel.findOne({_id: id}, function (err, device) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting device',
-                    error: err
-                });
-            }
-            if (!device) {
-                return res.status(404).json({
-                    message: 'No such device'
-                });
-            }
-
-            device.username = req.body.username ? req.body.username : device.username;			device.password = req.body.password ? req.body.password : device.password;			device.siteId = req.body.siteId ? req.body.siteId : device.siteId;			device.token = req.body.token ? req.body.token : device.token;			device.token_fcm = req.body.token_fcm ? req.body.token_fcm : device.token_fcm;			device.hotelId = req.body.hotelId ? req.body.hotelId : device.hotelId;			
-            device.save(function (err, device) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Error when updating device.',
-                        error: err
-                    });
-                }
-
-                return res.json(device);
-            });
-        });
-    },
-
-    /**
-     * deviceController.remove()
-     */
-    remove: function (req, res) {
-        var id = req.params.id;
-        deviceModel.findByIdAndRemove(id, function (err, device) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the device.',
-                    error: err
-                });
-            }
-            return res.status(204).json();
-        });
-    }
+        if(!device){
+            create(req, res);
+        } else {
+            MODEL.Device.findOneAndUpdate({deviceId: device.deviceId},{
+                    $set: {token: uuid.v1(), updatedDate: new Date(), infoSite: req.body.infoSite}
+                },
+                {upsert: false, new: true},
+                (err, model) => {
+                    MAINCONTROLLER.isDefaultTemplate(res, err, model);
+                })    
+        }
+    });
 };
+
+const create = (req, res) => {
+    req.body.createdDate = new Date();
+    req.body.updatedDate = new Date();
+    req.body.token = uuid.v1();
+    let deviceModel = new MODEL.Device(req.body);
+    
+    deviceModel.save((err, model) => {
+        MAINCONTROLLER.isDefaultTemplate(res, err, model);
+    });
+};
+
+export const updateTokenFCM = (req, res) => {
+    if(!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
+    MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.Device);
+};
+
+export const sendMessage = (req, res) => {
+    MODEL.User.findOne({ siteId: req.infoToken.siteId}, (err, user) => {
+        if(!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
+        // let receiveToken = `d4ol-GDihLw:APA91bG0mjbmZmXrpg0p6sBhXvs5CEKittshNvg3vXnJ7FVh4ZdYKoqkRQiM-X6yr_PQrxVGVG9XTzqgX_vr-pg6Bq_2OVn6Mm5xa2H6b1HDOvh7K1Z6avSDf_k5XnWqhjB0W5g99zHX`;
+        let receiveToken = user.token_fcm;
+        let chatRoomPath = `http://localhost:5000/#!/chatRooms/chat/${req.infoToken.deviceId}`;
+        let title = req.infoToken.username;
+
+        if(req.infoToken.siteId == CONFIG.SITE.HANDIGO){
+            title = `${ req.infoToken.infoSite.hotelName } No.${ req.infoToken.infoSite.room }`
+        }
+
+        let message = {
+            to: receiveToken,
+            notification: {
+                title: title,
+                body: req.body.notification.body,
+                click_action: chatRoomPath
+            }
+        };
+
+        // res.send(message);
+        MAINCONTROLLER.isSendMessage(res, message);
+    });
+};
+
