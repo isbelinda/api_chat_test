@@ -57,3 +57,22 @@ export const updateTokenFCM = (req, res) => {
     if(!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
     MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.User);
 };
+
+export const sendMessage = (req, res) => {
+    MODEL.Device.findOne({deviceId: req.body.deviceId}, (err, device) => {
+        if(!device) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
+        let receiveToken = device.token_fcm;
+        let title = `New message from Admin`;
+
+        let message = {
+            to: receiveToken,
+            notification: {
+                title: title,
+                body: req.body.notification.body
+            }
+        };
+
+        // res.json(message);
+        MAINCONTROLLER.isSendMessage(res, message);
+    });
+};

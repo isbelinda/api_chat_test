@@ -35,6 +35,10 @@ router.post('/User/UpdateTokenFCM', (req, res) => {
     userController.updateTokenFCM(req, res);
 });
 
+router.post('/User/SendMessage', (req, res) => {
+    userController.sendMessage(req, res);
+});
+
 
 //// DEVICE
 router.post('/Device/UpdateTokenFCM', (req, res) => {
