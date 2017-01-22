@@ -17,6 +17,10 @@ router.post('/Device/Login', (req, res) => {
     deviceController.login(req, res);
 });
 
+router.post('/User/Create', (req, res) => {
+    userController.create(req, res);
+});
+
 router.use((req, res, next) => {
     mainController.getToken(req, res, next);
 });
@@ -27,9 +31,7 @@ router.get('/User/GetLists', (req, res) => {
     userController.lists(req, res);
 });
 
-router.post('/User/Create', (req, res) => {
-    userController.create(req, res);
-});
+
 
 router.post('/User/UpdateTokenMessage', (req, res) => {
     userController.updateTokenFCM(req, res);

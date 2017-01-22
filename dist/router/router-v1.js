@@ -38,6 +38,10 @@ router.post('/Device/Login', function (req, res) {
     deviceController.login(req, res);
 });
 
+router.post('/User/Create', function (req, res) {
+    userController.create(req, res);
+});
+
 router.use(function (req, res, next) {
     mainController.getToken(req, res, next);
 });
@@ -45,10 +49,6 @@ router.use(function (req, res, next) {
 //// USER FOR CMS
 router.get('/User/GetLists', function (req, res) {
     userController.lists(req, res);
-});
-
-router.post('/User/Create', function (req, res) {
-    userController.create(req, res);
 });
 
 router.post('/User/UpdateTokenMessage', function (req, res) {
