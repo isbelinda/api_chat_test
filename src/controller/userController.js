@@ -55,6 +55,7 @@ export const remove = (req, res) => {
 
 export const updateTokenFCM = (req, res) => {
     if(!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
+    console.log(req.body.token_fcm);
     MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.User);
 };
 

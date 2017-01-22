@@ -34,6 +34,7 @@ export const User = mongoose.model('User', UserSchema);
 const DeviceSchema = new Schema({
     'username' : String,
     'password' : String,
+    'serialNumber' : String,
     'siteId' : Number,
     'token' : String,
     'token_fcm' : String,

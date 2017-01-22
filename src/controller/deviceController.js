@@ -4,7 +4,13 @@ import * as CONFIG from '../app/config';
 import * as MAINCONTROLLER from '../controller/mainController';
 
 export const login = (req, res) => {
-    MODEL.Device.findOne({username: req.body.username, password: req.body.password}, (err, device) => {
+    let infoRequest = {username: req.body.username, password: req.body.password};
+    if(req.body.siteId == CONFIG.SITE.HANDIGO){
+        // if(!req.body.serialNumber) return
+        infoRequest = { serialNumber: req.body.serialNumber}
+    }
+    console.log(infoRequest);
+    MODEL.Device.findOne(infoRequest, (err, device) => {
         if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
 
         if(!device){

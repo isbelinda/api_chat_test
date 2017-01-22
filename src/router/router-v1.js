@@ -31,7 +31,7 @@ router.post('/User/Create', (req, res) => {
     userController.create(req, res);
 });
 
-router.post('/User/UpdateTokenFCM', (req, res) => {
+router.post('/User/UpdateTokenMessage', (req, res) => {
     userController.updateTokenFCM(req, res);
 });
 
@@ -41,14 +41,13 @@ router.post('/User/SendMessage', (req, res) => {
 
 
 //// DEVICE
-router.post('/Device/UpdateTokenFCM', (req, res) => {
+router.post('/Device/UpdateTokenMessage', (req, res) => {
     deviceController.updateTokenFCM(req, res);
 });
 
 router.post('/Device/SendMessage', (req, res) => {
     deviceController.sendMessage(req, res);
 });
-
 
 
 
