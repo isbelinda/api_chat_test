@@ -3,8 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var FULLPATH = exports.FULLPATH = 'http://localhost:3004/';
-var DB = exports.DB = 'mongodb://localhost:27017/livechat_server';
+// export const FULLPATH = `http://localhost:3004/`;
+var FULLPATH = exports.FULLPATH = 'https://apichat.herokuapp.com/';
+// export const DB = `mongodb://localhost:27017/livechat_server`;
+var DB = exports.DB = 'mongodb://belinda:060451105@ds159208.mlab.com:59208/apichat';
 var FCM_KEY = exports.FCM_KEY = 'AAAAiQwy1bI:APA91bFsiMmjaWhVj6-uWFFMTo-2_ra70fjn1Gyuufzi7F3HXIqWl6VMTvRKJuGV21M6O2MF60NpzXKBc0mlvLIcR5kK3RNU990KLKaCTUJMHqGsORtyM2C07A6YzEn1BqVwGWRAdHmlj5eja9JoIx3MB9VX7JBAFw';
 
 var ROLETYPE = exports.ROLETYPE = {
