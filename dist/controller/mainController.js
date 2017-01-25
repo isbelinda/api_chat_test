@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.isSendMessage = exports.isUpdateTokenFCM = exports.isDefaultTemplate = exports.isJsonSuccessTemplate = exports.isJsonErrorTemplate = exports.getToken = undefined;
+exports.getRooms = exports.isSendMessage = exports.isUpdateTokenFCM = exports.isDefaultTemplate = exports.isJsonSuccessTemplate = exports.isJsonErrorTemplate = exports.getToken = undefined;
 
 var _config = require('../app/config');
 
@@ -107,4 +107,13 @@ var isSendMessage = exports.isSendMessage = function isSendMessage(res, message)
             });
         }
     });
+};
+
+var getRooms = exports.getRooms = function getRooms(res, data) {
+    var path = 'chatRooms/' + data.siteId + '/' + data.deviceId + '/';
+    if (data.siteId == CONFIG.SITE.HANDIGO) {
+        path = 'chatRooms/' + data.siteId + '/' + data.infoSite.hotelId + '/' + data.deviceId + '/';
+    }
+
+    return path;
 };

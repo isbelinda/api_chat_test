@@ -4,7 +4,12 @@ import * as CONFIG from '../app/config';
 import * as MAINCONTROLLER from '../controller/mainController';
 
 export const login = (req, res) => {
-    MODEL.User.findOne({username: req.body.username}, (err, user) => {
+    let infoRequest = {
+        username: req.body.username
+    };
+
+    MODEL.User.findOne(infoRequest, (err, user) => {
+        if(!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_NOT_FOUND));
         if(user.password != req.body.password) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.WRONG_PASSWORD));
         let token = uuid.v1();
         
@@ -55,7 +60,6 @@ export const remove = (req, res) => {
 
 export const updateTokenFCM = (req, res) => {
     if(!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
-    console.log(req.body.token_fcm);
     MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.User);
 };
 

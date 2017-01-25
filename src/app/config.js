@@ -1,8 +1,8 @@
 // export const FULLPATH = `http://localhost:3004/`;
-export const FULLPATH = `https://apichat.herokuapp.com/`;
-// export const DB = `mongodb://localhost:27017/livechat_server`;
-export const DB = 'mongodb://belinda:060451105@ds159208.mlab.com:59208/apichat';
-export const FCM_KEY = `AAAAiQwy1bI:APA91bFsiMmjaWhVj6-uWFFMTo-2_ra70fjn1Gyuufzi7F3HXIqWl6VMTvRKJuGV21M6O2MF60NpzXKBc0mlvLIcR5kK3RNU990KLKaCTUJMHqGsORtyM2C07A6YzEn1BqVwGWRAdHmlj5eja9JoIx3MB9VX7JBAFw`;
+export const FULLPATH = 'https://livechatapi.handigothailand.com/';
+export const DB = `mongodb://localhost:27017/livechat_server`;
+// export const DB = 'mongodb://belinda:060451105@ds159208.mlab.com:59208/apichat';
+export const FCM_KEY = `AAAAdkbPARY:APA91bHal9yJxpIIrs0XJ-Bpa_GkI1nnkZVebsFiVJAVELKlGykNS8VECdakw9QlL8fDrGMD2kpWa3uEI1J-nS3LM-qrksN9vUgtGU01Pk5DHRRaWA-89SNdC9ztxpBB_mGP6Sg1YVOb`;
 
 export const ROLETYPE = {
     SUPERADMIN: 1,
@@ -10,7 +10,8 @@ export const ROLETYPE = {
 };
 
 export const SITE = {
-    HANDIGO: 1
+    HANDIGO: 1,
+    NAVIGO: 2
 };
 
 export const CONSTANT = {
@@ -24,7 +25,8 @@ export const CONSTANT = {
     TOKEN_NOT_PROVIDED: `No token provided`,
     DEVICE_NOT_FOUND: 'Device not found.',
     SEND_MSG_SUCCESS: 'Send message is success.',
-    SEND_MSG_FAIL: 'Send message is fail.'
+    SEND_MSG_FAIL: 'Send message is fail.',
+    SERIAL_NUMBER_NOT_SEND: 'Please send serial number device.'
 };
 
 export const FORMAT_TYPE = {

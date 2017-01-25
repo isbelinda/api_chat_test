@@ -91,3 +91,12 @@ export const isSendMessage = (res, message) => {
         }
     });
 };
+
+export const getRooms = (res, data) => {
+    let path = `chatRooms/${data.siteId}/${data.deviceId}/`;
+    if(data.siteId == CONFIG.SITE.HANDIGO){
+        path = `chatRooms/${data.siteId}/${data.infoSite.hotelId}/${data.deviceId}/`;
+    }
+
+    return path;
+};

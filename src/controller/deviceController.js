@@ -4,25 +4,40 @@ import * as CONFIG from '../app/config';
 import * as MAINCONTROLLER from '../controller/mainController';
 
 export const login = (req, res) => {
-    let infoRequest = {username: req.body.username, password: req.body.password};
+    let infoRequest = {username: req.body.username, siteId: req.body.siteId};
     if(req.body.siteId == CONFIG.SITE.HANDIGO){
-        // if(!req.body.serialNumber) return
-        infoRequest = { serialNumber: req.body.serialNumber}
+        if(!req.body.serialNumber) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERIAL_NUMBER_NOT_SEND));
+        infoRequest = {
+            serialNumber: req.body.serialNumber
+        }
     }
-    console.log(infoRequest);
+
     MODEL.Device.findOne(infoRequest, (err, device) => {
         if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
 
+        let updateRequest = {
+            password: req.body.password,
+            token: uuid.v1(),
+            updatedDate: new Date(),
+            infoSite: req.body.infoSite
+        };
+        
         if(!device){
             create(req, res);
         } else {
             MODEL.Device.findOneAndUpdate({deviceId: device.deviceId},{
-                    $set: {token: uuid.v1(), updatedDate: new Date(), infoSite: req.body.infoSite}
+                    $set: updateRequest
                 },
                 {upsert: false, new: true},
                 (err, model) => {
-                    MAINCONTROLLER.isDefaultTemplate(res, err, model);
-                })    
+                    if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+                    return res.json({
+                        isSuccess: true,
+                        urlPath: CONFIG.FULLPATH,
+                        roomPath: MAINCONTROLLER.getRooms(res, model),
+                        results: model
+                    })
+                })
         }
     });
 };
@@ -32,9 +47,32 @@ const create = (req, res) => {
     req.body.updatedDate = new Date();
     req.body.token = uuid.v1();
     let deviceModel = new MODEL.Device(req.body);
+    let infoRequest = {
+        username: deviceModel.username, 
+        siteId: deviceModel.siteId
+    };
     
-    deviceModel.save((err, model) => {
-        MAINCONTROLLER.isDefaultTemplate(res, err, model);
+    if(deviceModel.siteId == CONFIG.SITE.HANDIGO){
+        infoRequest = {
+            serialNumber: deviceModel.serialNumber,
+            siteId: deviceModel.siteId
+        }
+    }
+    
+    MODEL.Device.findOne(infoRequest, (err, device) => {
+        if(device) {
+            return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_ALREADY));
+        }
+
+        deviceModel.save((err, model) => {
+            if(err) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.SERVER_ERROR));
+            return res.json({
+                isSuccess: true,
+                urlPath: CONFIG.FULLPATH,
+                roomPath: MAINCONTROLLER.getRooms(res, model),
+                results: model
+            })
+        });
     });
 };
 
@@ -44,6 +82,7 @@ export const updateTokenFCM = (req, res) => {
 };
 
 export const sendMessage = (req, res) => {
+    console.log(req.body);
     MODEL.User.findOne({ siteId: req.infoToken.siteId}, (err, user) => {
         if(!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
         // let receiveToken = `d4ol-GDihLw:APA91bG0mjbmZmXrpg0p6sBhXvs5CEKittshNvg3vXnJ7FVh4ZdYKoqkRQiM-X6yr_PQrxVGVG9XTzqgX_vr-pg6Bq_2OVn6Mm5xa2H6b1HDOvh7K1Z6avSDf_k5XnWqhjB0W5g99zHX`;
@@ -64,8 +103,9 @@ export const sendMessage = (req, res) => {
             }
         };
 
-        // res.send(message);
         MAINCONTROLLER.isSendMessage(res, message);
     });
 };
+
+
 

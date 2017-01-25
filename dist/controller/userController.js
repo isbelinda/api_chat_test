@@ -26,7 +26,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var login = exports.login = function login(req, res) {
-    MODEL.User.findOne({ username: req.body.username }, function (err, user) {
+    var infoRequest = {
+        username: req.body.username
+    };
+
+    MODEL.User.findOne(infoRequest, function (err, user) {
+        if (!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.USER_NOT_FOUND));
         if (user.password != req.body.password) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.WRONG_PASSWORD));
         var token = _nodeUuid2.default.v1();
 
@@ -71,7 +76,6 @@ var remove = exports.remove = function remove(req, res) {};
 
 var updateTokenFCM = exports.updateTokenFCM = function updateTokenFCM(req, res) {
     if (!req.body.token_fcm) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.TOKEN_NOT_PROVIDED));
-    console.log(req.body.token_fcm);
     MAINCONTROLLER.isUpdateTokenFCM(req, res, MODEL.User);
 };
 
