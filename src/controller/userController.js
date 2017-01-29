@@ -68,7 +68,7 @@ export const sendMessage = (req, res) => {
         if(!device) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
         let receiveToken = device.token_fcm;
         let title = `New message from Admin`;
-
+        
         let message = {
             to: receiveToken,
             notification: {
@@ -76,7 +76,7 @@ export const sendMessage = (req, res) => {
                 body: req.body.notification.body
             }
         };
-
+        
         // res.json(message);
         MAINCONTROLLER.isSendMessage(res, message);
     });

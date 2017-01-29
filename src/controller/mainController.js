@@ -72,6 +72,8 @@ export const isUpdateTokenFCM = (req, res, schema) => {
         },
         {upsert: false, new: true},
         (err, model) => {
+            // console.log(model);
+            if(!model) return res.json(isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
             isDefaultTemplate(res, err, model);
         })
 };
@@ -81,7 +83,7 @@ export const isSendMessage = (res, message) => {
     fcm.send(message, function(err, response){
         if (err) {
             console.log("Something has gone wrong!");
-            return res.json(isJsonErrorTemplate(CONFIG.CONSTANT.SEND_MSG_FAIL));
+            return res.json(isJsonErrorTemplate(err));
         } else {
             console.log("Successfully sent with response: ", response);
             return res.json({
