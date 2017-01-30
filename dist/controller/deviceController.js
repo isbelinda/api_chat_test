@@ -103,9 +103,8 @@ var updateTokenFCM = exports.updateTokenFCM = function updateTokenFCM(req, res) 
 };
 
 var sendMessage = exports.sendMessage = function sendMessage(req, res) {
-    console.log('siteId: ' + req.infoToken.siteId);
-    MODEL.User.findOne({ siteId: req.infoToken.siteId }, function (err, user) {
-        console.log(user);
+    MODEL.User.findOne({ hotelId: req.infoToken.infoSite.hotelId }, function (err, user) {
+        // console.log(user);
         if (!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
         // let receiveToken = `d4ol-GDihLw:APA91bG0mjbmZmXrpg0p6sBhXvs5CEKittshNvg3vXnJ7FVh4ZdYKoqkRQiM-X6yr_PQrxVGVG9XTzqgX_vr-pg6Bq_2OVn6Mm5xa2H6b1HDOvh7K1Z6avSDf_k5XnWqhjB0W5g99zHX`;
         var receiveToken = user.token_fcm;

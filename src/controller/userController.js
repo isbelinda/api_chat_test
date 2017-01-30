@@ -18,7 +18,26 @@ export const login = (req, res) => {
         },
             {upsert: false, new: true},
             (err, model) => {
-                MAINCONTROLLER.isDefaultTemplate(res, err, model);
+                console.log(model);
+                let path;
+                if(model.roleId == CONFIG.ROLETYPE.ADMIN){
+                        path = `chatRooms/${model.siteId}/`;
+                    if(model.siteId == CONFIG.SITE.HANDIGO){
+                        path = `chatRooms/${model.siteId}/${model.hotelId}/`;
+                    }
+
+                    
+                }
+
+                return res.json({
+                    isSuccess: true,
+                    urlPath: CONFIG.FULLPATH,
+                    roomPath: path,
+                    results: model
+                });
+                
+                
+                // MAINCONTROLLER.isDefaultTemplate(res, err, model);
         })
     })
 };

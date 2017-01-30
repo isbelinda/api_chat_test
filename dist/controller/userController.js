@@ -38,7 +38,23 @@ var login = exports.login = function login(req, res) {
         MODEL.User.findOneAndUpdate({ userId: user.userId }, {
             $set: { token: token, updatedDate: new Date() }
         }, { upsert: false, new: true }, function (err, model) {
-            MAINCONTROLLER.isDefaultTemplate(res, err, model);
+            console.log(model);
+            var path = void 0;
+            if (model.roleId == CONFIG.ROLETYPE.ADMIN) {
+                path = 'chatRooms/' + model.siteId + '/';
+                if (model.siteId == CONFIG.SITE.HANDIGO) {
+                    path = 'chatRooms/' + model.siteId + '/' + model.hotelId + '/';
+                }
+            }
+
+            return res.json({
+                isSuccess: true,
+                urlPath: CONFIG.FULLPATH,
+                roomPath: path,
+                results: model
+            });
+
+            // MAINCONTROLLER.isDefaultTemplate(res, err, model);
         });
     });
 };
