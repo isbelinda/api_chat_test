@@ -31,8 +31,6 @@ router.get('/User/GetLists', (req, res) => {
     userController.lists(req, res);
 });
 
-
-
 router.post('/User/UpdateTokenMessage', (req, res) => {
     userController.updateTokenFCM(req, res);
 });

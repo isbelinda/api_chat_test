@@ -118,7 +118,7 @@ var sendMessage = exports.sendMessage = function sendMessage(req, res) {
         if (!user) return res.json(MAINCONTROLLER.isJsonErrorTemplate(CONFIG.CONSTANT.DATA_NOT_FOUND));
         // let receiveToken = `d4ol-GDihLw:APA91bG0mjbmZmXrpg0p6sBhXvs5CEKittshNvg3vXnJ7FVh4ZdYKoqkRQiM-X6yr_PQrxVGVG9XTzqgX_vr-pg6Bq_2OVn6Mm5xa2H6b1HDOvh7K1Z6avSDf_k5XnWqhjB0W5g99zHX`;
         var receiveToken = user.token_fcm;
-        var chatRoomPath = 'http://localhost:5000/#!/chatRooms/chat/' + req.infoToken.deviceId;
+        var chatRoomPath = 'https://livechat.handigothailand.com/#!/chatRooms/chat/' + req.infoToken.deviceId;
         var title = req.infoToken.username;
 
         if (req.infoToken.siteId == CONFIG.SITE.HANDIGO) {

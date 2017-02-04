@@ -49,6 +49,10 @@ export const lists = (req, res) => {
     })
 };
 
+export const listsBySiteId = (req, res) => {
+      
+};
+
 export const create = (req, res) => {
     let userRequest = req.body;
     userRequest.createdDate = new Date();

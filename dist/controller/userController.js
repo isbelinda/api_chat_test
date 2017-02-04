@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sendMessage = exports.updateTokenFCM = exports.remove = exports.edit = exports.create = exports.lists = exports.login = undefined;
+exports.sendMessage = exports.updateTokenFCM = exports.remove = exports.edit = exports.create = exports.listsBySiteId = exports.lists = exports.login = undefined;
 
 var _nodeUuid = require('node-uuid');
 
@@ -65,6 +65,8 @@ var lists = exports.lists = function lists(req, res) {
         return res.json(MAINCONTROLLER.isJsonSuccessTemplate(CONFIG.FORMAT_TYPE.ARRAY, users));
     });
 };
+
+var listsBySiteId = exports.listsBySiteId = function listsBySiteId(req, res) {};
 
 var create = exports.create = function create(req, res) {
     var userRequest = req.body;
