@@ -113,7 +113,7 @@ var isSendMessage = exports.isSendMessage = function isSendMessage(res, message)
 
 var getRooms = exports.getRooms = function getRooms(res, data) {
     var path = 'chatRooms/' + data.siteId + '/' + data.deviceId + '/';
-    if (data.siteId == CONFIG.SITE.HANDIGO) {
+    if (data.siteId == CONFIG.SITE.HANDIGO || data.siteId == CONFIG.SITE.HANDIGO_TEST) {
         path = 'chatRooms/' + data.siteId + '/' + data.infoSite.hotelId + '/' + data.deviceId + '/';
     }
 

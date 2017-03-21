@@ -38,11 +38,11 @@ var login = exports.login = function login(req, res) {
         MODEL.User.findOneAndUpdate({ userId: user.userId }, {
             $set: { token: token, updatedDate: new Date() }
         }, { upsert: false, new: true }, function (err, model) {
-            console.log(model);
+            // console.log(model);
             var path = void 0;
             if (model.roleId == CONFIG.ROLETYPE.ADMIN) {
                 path = 'chatRooms/' + model.siteId + '/';
-                if (model.siteId == CONFIG.SITE.HANDIGO) {
+                if (model.siteId == CONFIG.SITE.HANDIGO || model.siteId == CONFIG.SITE.HANDIGO_TEST) {
                     path = 'chatRooms/' + model.siteId + '/' + model.hotelId + '/';
                 }
             }

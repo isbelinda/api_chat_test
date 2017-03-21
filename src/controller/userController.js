@@ -18,11 +18,11 @@ export const login = (req, res) => {
         },
             {upsert: false, new: true},
             (err, model) => {
-                console.log(model);
+                // console.log(model);
                 let path;
                 if(model.roleId == CONFIG.ROLETYPE.ADMIN){
                         path = `chatRooms/${model.siteId}/`;
-                    if(model.siteId == CONFIG.SITE.HANDIGO){
+                    if(model.siteId == CONFIG.SITE.HANDIGO || model.siteId == CONFIG.SITE.HANDIGO_TEST){
                         path = `chatRooms/${model.siteId}/${model.hotelId}/`;
                     }
 
