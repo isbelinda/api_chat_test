@@ -4,6 +4,7 @@ import * as CONFIG from '../app/config';
 import * as MAINCONTROLLER from '../controller/mainController';
 
 export const login = (req, res) => {
+    
     let infoRequest = {
         username: req.body.username
     };
