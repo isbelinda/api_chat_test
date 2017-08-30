@@ -21,13 +21,22 @@ export const login = (req, res) => {
             (err, model) => {
                 // console.log(model);
                 let path;
-                if(model.roleId == CONFIG.ROLETYPE.ADMIN){
-                        path = `chatRooms/${model.siteId}/`;
-                    if(model.siteId == CONFIG.SITE.HANDIGO || model.siteId == CONFIG.SITE.HANDIGO_TEST){
-                        path = `chatRooms/${model.siteId}/${model.hotelId}/`;
-                    }
 
-                    
+                switch(model.siteId) {
+                    case CONFIG.SITE.NEW_HANDIGO:
+                        if(model.roleId == CONFIG.ROLETYPE.ADMIN){
+                            path = `hotel_id:${model.hotelId}/chat_list/`
+                        }                    
+                    break
+
+                    default: 
+                    if(model.roleId == CONFIG.ROLETYPE.ADMIN){
+                            path = `chatRooms/${model.siteId}/`;
+                        if(model.siteId == CONFIG.SITE.HANDIGO || model.siteId == CONFIG.SITE.HANDIGO_TEST){
+                            path = `chatRooms/${model.siteId}/${model.hotelId}/`;
+                        }                    
+                    }
+                    break
                 }
 
                 return res.json({

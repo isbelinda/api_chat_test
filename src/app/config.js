@@ -13,7 +13,9 @@ export const ROLETYPE = {
 export const SITE = {
     HANDIGO: 1,
     HANDIGO_TEST: 101,
-    NAVIGO: 2
+    NAVIGO: 2,
+    NEW_HANDIGO: 3,
+    NEW_HANDIGO_TEST: 103
 };
 
 export const CONSTANT = {
