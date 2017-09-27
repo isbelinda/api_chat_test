@@ -3,7 +3,7 @@ import autoIncrement from 'mongoose-auto-increment';
 
 import * as CONFIG from './config';
 
-const connection = mongoose.connect(CONFIG.DB);
+const connection = mongoose.connect(CONFIG.DB, CONFIG.OPTIONS_DB);
 autoIncrement.initialize(connection);
 const Schema   = mongoose.Schema;
 

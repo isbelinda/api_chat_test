@@ -21,7 +21,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var connection = _mongoose2.default.connect(CONFIG.DB);
+var connection = _mongoose2.default.connect(CONFIG.DB, CONFIG.OPTIONS_DB);
 _mongooseAutoIncrement2.default.initialize(connection);
 var Schema = _mongoose2.default.Schema;
 
