@@ -21,6 +21,18 @@ router.post('/User/Create', (req, res) => {
     userController.create(req, res);
 });
 
+router.get('/User/GetUser', (req, res) => {
+    userController.getUser(req, res)
+})
+
+router.post('/User/EditUser', (req, res) => {
+    userController.edit(req, res)
+})
+
+router.post('/User/Delete', (req, res) => {
+    userController.remove(req, res)
+})
+
 router.use((req, res, next) => {
     mainController.getToken(req, res, next);
 });

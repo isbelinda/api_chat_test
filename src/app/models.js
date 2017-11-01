@@ -19,7 +19,8 @@ const UserSchema = new Schema({
     'hotelId' : Number,
     'hotelName' : String,
     'createdDate' : Date,
-    'updatedDate' : Date
+    'updatedDate' : Date,
+    'tokenHash': String
 });
 UserSchema.plugin(autoIncrement.plugin, {
     model: 'User',
